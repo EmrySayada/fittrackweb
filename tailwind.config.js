@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        Poppins: ["Poppins", "sans-sarif"],
+        Poppins: ["Poppins", "arial"],
       },
       screens: {
         mobile: "565px",

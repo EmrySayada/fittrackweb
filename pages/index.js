@@ -23,6 +23,7 @@ export default function Home() {
           setW(res.weight);
           setVal(res.proteinCurr);
           setUser(user);
+          setTempVal(val);
           if (res.lastSignedIn < date.getDay()) {
             updateUserData(user, {
               proteinCurr: 0,
@@ -37,7 +38,6 @@ export default function Home() {
   }, []);
   return (
     <div className="bg-black flex h-screen w-screen items-center justify-center flex-col">
-      <h1 className="text-white text-[24px] font-Poppins font-thin">Hello</h1>
       <section className="bg-[#141414] h-[350px] w-[350px] rounded-[30px] flex items-center justify-around flex-col">
         <h1 className="text-white font-Poppins text-[20px] font-semibold">
           Protein intake
@@ -58,31 +58,42 @@ export default function Home() {
             })}
           />
           <p className="font-Poppins text-white text-[24px] absolute font-bold">
-            {parseInt((val / proteinMax) * 100)}%
+            {parseInt((val / proteinMax) * 100)}%{" "}
+            <span className="text-[16px] font-normal">
+              {val}/{proteinMax}
+            </span>
           </p>
         </section>
         <input
           type="number"
-          placeholder="Enter amount of protein"
+          placeholder="Enter amount of protein (g)"
           className="bg-black font-Poppins placeholder:text-white h-[50px] w-[90%] flex pl-[20px] rounded-[20px] text-white hover:border-[5px] transition-all"
           onChange={(v) => {
-            if (v.target.value.length != 0) {
-              setTempVal(val + parseInt(v.target.value));
-            } else {
-              setTempVal(val);
-            }
+            setTempVal(val + parseInt(v.target.value));
           }}
         />
       </section>
       <button
         onClick={async () => {
-          const data = { proteinCurr: parseInt(tempVal) };
-          await updateUserData(user, data);
-          router.reload();
+          if (tempVal > 0) {
+            const data = { proteinCurr: parseInt(tempVal) };
+            await updateUserData(user, data);
+            router.reload();
+          } else {
+            alert("Enter a positive number!");
+          }
         }}
         className="text-white font-Poppins font-semibold bg-[#141414] h-[50px] w-[50%] rounded-[20px] hover:border-[5px] transition-all mt-[40px]"
       >
         Continue
+      </button>
+      <button
+        className="text-white font-Poppins font-semibold bg-[#141414] h-[50px] w-[50%] rounded-[20px] hover:border-[5px] transition-all mt-[40px]"
+        onClick={() => {
+          router.push("/account");
+        }}
+      >
+        Account
       </button>
     </div>
   );
