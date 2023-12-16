@@ -19,6 +19,17 @@ function Register() {
       <h1 className="text-white font-Poppins text-[24px] font-semibold mt-[30%]">
         Create an account
       </h1>
+      <h6 className="text-white font-Poppins">
+        Already Have an account?{" "}
+        <span
+          className="font-semibold underline"
+          onClick={() => {
+            router.push("/login");
+          }}
+        >
+          Log In
+        </span>
+      </h6>
       <section className="bg-[#141414] h-[450px] w-[350px] flex items-center justify-center mt-[20%] rounded-[30px] flex-col">
         <input
           type="email"

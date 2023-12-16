@@ -3,6 +3,7 @@ import { updateUserData } from "@/firebaseHelper";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/firebase.config";
 import { useRouter } from "next/router";
+import { signOut } from "firebase/auth";
 
 function Account() {
   const [w, setW] = useState(0);
@@ -33,9 +34,23 @@ function Account() {
             updateUserData(user, data);
             router.push("/");
           }}
-          className="text-white font-Poppins font-semibold bg-black h-[50px] w-[50%] rounded-[20px] hover:border-[5px] border-l-[#4285F4] border-t-[#34A853] border-r-[#FBBC05] border-b-[#FA4335] transition-all mt-[40px]"
+          className="text-white font-Poppins font-semibold bg-black h-[50px] w-[50%] rounded-[20px] hover:border-[5px] transition-all mt-[40px]"
         >
           Continue
+        </button>
+        <button
+          className="text-white font-Poppins bg-black h-[50px] w-[50%] rounded-[20px] mt-[20px] hover:border-[5px] transition-all"
+          onClick={() => {
+            signOut(auth)
+              .then(() => {
+                router.push("/register");
+              })
+              .catch((error) => {
+                console.error(error.message);
+              });
+          }}
+        >
+          Sign Out
         </button>
       </section>
     </div>

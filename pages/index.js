@@ -23,7 +23,7 @@ export default function Home() {
           setW(res.weight);
           setVal(res.proteinCurr);
           setUser(user);
-          if (res.lastSignedIn != date.getDay()) {
+          if (res.lastSignedIn < date.getDay()) {
             updateUserData(user, {
               proteinCurr: 0,
               lastSignedIn: date.getDay(),
@@ -37,16 +37,14 @@ export default function Home() {
   }, []);
   return (
     <div className="bg-black flex h-screen w-screen items-center justify-center flex-col">
-      <h1 className="text-white text-[24px] font-Poppins font-thin">
-        Hello Emry
-      </h1>
+      <h1 className="text-white text-[24px] font-Poppins font-thin">Hello</h1>
       <section className="bg-[#141414] h-[350px] w-[350px] rounded-[30px] flex items-center justify-around flex-col">
         <h1 className="text-white font-Poppins text-[20px] font-semibold">
           Protein intake
         </h1>
         <section className="h-[50%] w-[50%] flex items-center justify-center flex-col">
           <CircularProgressbar
-            value={val}
+            value={parseInt((val / proteinMax) * 100)}
             className="rotate-[-90deg]"
             styles={buildStyles({
               rotation: 0.25,
@@ -60,15 +58,19 @@ export default function Home() {
             })}
           />
           <p className="font-Poppins text-white text-[24px] absolute font-bold">
-            {val}%
+            {parseInt((val / proteinMax) * 100)}%
           </p>
         </section>
         <input
           type="number"
           placeholder="Enter amount of protein"
           className="bg-black font-Poppins placeholder:text-white h-[50px] w-[90%] flex pl-[20px] rounded-[20px] text-white hover:border-[5px] transition-all"
-          onChange={async (v) => {
-            setTempVal(val + parseInt(v.target.value));
+          onChange={(v) => {
+            if (v.target.value.length != 0) {
+              setTempVal(val + parseInt(v.target.value));
+            } else {
+              setTempVal(val);
+            }
           }}
         />
       </section>
